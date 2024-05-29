@@ -34,7 +34,7 @@ class SolverFP:
             gradient[1:-1] = (value[j, 2:] - value[j, :-2])/(2*delta_space)
             gradient[0] = (value[j, 1] + 1)/(2*delta_space)
             gradient[-1] = (-1 - value[j, -1])/(2*delta_space)
-            control = self.control_max/(1 + np.exp(10*(gradient + self.weight)))
+            control = self.control_max/(1 + np.exp(5*(gradient + self.weight)))
 
             # Compute system matrix for theta scheme.
             sys_mat = np.zeros((3, mesh_space.size - 2))
@@ -161,7 +161,7 @@ class SolverMFC:
         gradient[:, 0] = (value[:, 1] + 1)/(2*delta_space)
         gradient[:, -1] = (-1 - value[:, -1])/(2*delta_space)
         cost[0] = np.sum(delta_time*delta_space*self.weight
-                         * flow*self.control_max/(1 + np.exp(10*(gradient + self.weight))))
+                         * flow*self.control_max/(1 + np.exp(5*(gradient + self.weight))))
         cost[1] = 1 - np.sum(delta_space*flow[-1, :])
 
         return flow, value, cost, error
